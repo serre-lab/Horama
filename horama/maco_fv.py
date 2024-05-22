@@ -39,7 +39,7 @@ def maco_preconditioner(magnitude_template, phase, values_range):
     spatial_image = standardize(spatial_image)
 
     # recorrelate colors and adjust value range
-    color_recorrelated_image = recorrelate_colors(spatial_image)
+    color_recorrelated_image = recorrelate_colors(spatial_image, device)
     final_image = torch.sigmoid(color_recorrelated_image) * (values_range[1] - values_range[0]) + values_range[0]
     return final_image
 
@@ -62,13 +62,13 @@ def maco(objective_function, total_steps=1000, learning_rate=1.0, image_size=128
 
         # preprocess and compute loss
         img = maco_preconditioner(magnitude, phase, values_range)
-        loss, img = optimization_step(objective_function, img, box_size, noise, crops_per_iteration, model_input_size)
+        loss, img = optimization_step(objective_function, img, box_size, noise, crops_per_iteration, model_input_size, device)
 
         loss.backward()
         # get dy/dx to update transparency mask
         transparency_accumulator += torch.abs(img.grad)
         optimizer.step()
 
-    final_image = maco_preconditioner(magnitude, phase, values_range)
+    final_image = maco_preconditioner(magnitude, phase, values_range, device)
 
     return final_image, transparency_accumulator
