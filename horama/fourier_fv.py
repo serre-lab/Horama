@@ -26,7 +26,7 @@ def init_olah_buffer(width, height, std=1.0):
     random_spectrum = torch.complex(torch.randn(spectrum_shape) * std, torch.randn(spectrum_shape) * std)
     return random_spectrum
 
-def fourier_preconditionner(spectrum, spectrum_scaler, values_range):
+def fourier_preconditionner(spectrum, spectrum_scaler, values_range, device):
     # precondition the Fourier spectrum and convert it to spatial domain
     assert spectrum.shape[0] == 3
 
@@ -35,7 +35,7 @@ def fourier_preconditionner(spectrum, spectrum_scaler, values_range):
 
     spatial_image = torch.fft.irfft2(spectrum)
     spatial_image = standardize(spatial_image)
-    color_recorrelated_image = recorrelate_colors(spatial_image)
+    color_recorrelated_image = recorrelate_colors(spatial_image, device)
 
     image = torch.sigmoid(color_recorrelated_image) * (values_range[1] - values_range[0]) + values_range[0]
     return image
@@ -59,11 +59,11 @@ def fourier(objective_function, decay_power=1.5, total_steps=1000, learning_rate
     for step in tqdm(range(total_steps)):
         optimizer.zero_grad()
 
-        image = fourier_preconditionner(spectrum, spectrum_scaler, values_range)
+        image = fourier_preconditionner(spectrum, spectrum_scaler, values_range, device)
         loss, img = optimization_step(objective_function, image, box_size, noise, crops_per_iteration, model_input_size)
         loss.backward()
         transparency_accumulator += torch.abs(img.grad)
         optimizer.step()
 
-    final_image = fourier_preconditionner(spectrum, spectrum_scaler, values_range)
+    final_image = fourier_preconditionner(spectrum, spectrum_scaler, values_range, device)
     return final_image, transparency_accumulator
