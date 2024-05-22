@@ -1,21 +1,22 @@
 import torch
 from torchvision.ops import roi_align
 
-# tensor for color correlation svd square root
-color_correlation_svd_sqrt = torch.tensor(
-    [[0.56282854, 0.58447580, 0.58447580],
-     [0.19482528, 0.00000000, -0.19482528],
-     [0.04329450, -0.10823626, 0.06494176]],
-    dtype=torch.float32
-).cuda()
-
 def standardize(tensor):
     # standardizes the tensor to have 0 mean and unit variance
     tensor = tensor - torch.mean(tensor)
     tensor = tensor / (torch.std(tensor) + 1e-4)
     return tensor
 
-def recorrelate_colors(image):
+def recorrelate_colors(image, device):
+
+    # tensor for color correlation svd square root
+    color_correlation_svd_sqrt = torch.tensor(
+        [[0.56282854, 0.58447580, 0.58447580],
+         [0.19482528, 0.00000000, -0.19482528],
+         [0.04329450, -0.10823626, 0.06494176]],
+        dtype=torch.float32
+    ).to(device)
+
     # recorrelates the colors of the images
     assert len(image.shape) == 3
 
