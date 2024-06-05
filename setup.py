@@ -12,7 +12,7 @@ setup(
     author="Thomas FEL, Thibaut BOISSIN, Victor BOUTIN, Agustin PICARD, Paul NOVELLO",
     author_email="thomas_fel@brown.edu",
     license="MIT",
-    install_requires=['numpy','matplotlib', 'torch', 'torchvision'],
+    install_requires=['numpy', 'matplotlib', 'torch', 'torchvision'],
     packages=find_packages(),
     python_requires=">=3.6",
     classifiers=[

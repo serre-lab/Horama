@@ -1,11 +1,13 @@
 import torch
 from torchvision.ops import roi_align
 
+
 def standardize(tensor):
     # standardizes the tensor to have 0 mean and unit variance
     tensor = tensor - torch.mean(tensor)
     tensor = tensor / (torch.std(tensor) + 1e-4)
     return tensor
+
 
 def recorrelate_colors(image, device):
     # recorrelates the colors of the images
@@ -27,8 +29,11 @@ def recorrelate_colors(image, device):
 
     return recorrelated_image
 
-def optimization_step(objective_function, image, box_size, noise_level, number_of_crops_per_iteration, model_input_size):
+
+def optimization_step(objective_function, image, box_size, noise_level,
+                      number_of_crops_per_iteration, model_input_size):
     # performs an optimization step on the generated image
+    # pylint: disable=C0103
     assert box_size[1] >= box_size[0]
     assert len(image.shape) == 3
 
@@ -38,7 +43,8 @@ def optimization_step(objective_function, image, box_size, noise_level, number_o
     # generate random boxes
     x0 = 0.5 + torch.randn((number_of_crops_per_iteration,), device=device) * 0.15
     y0 = 0.5 + torch.randn((number_of_crops_per_iteration,), device=device) * 0.15
-    delta_x = torch.rand((number_of_crops_per_iteration,), device=device) * (box_size[1] - box_size[0]) + box_size[1]
+    delta_x = torch.rand((number_of_crops_per_iteration,),
+                         device=device) * (box_size[1] - box_size[0]) + box_size[1]
     delta_y = delta_x
 
     boxes = torch.stack([torch.zeros((number_of_crops_per_iteration,), device=device),
@@ -47,11 +53,13 @@ def optimization_step(objective_function, image, box_size, noise_level, number_o
                          x0 + delta_x * 0.5,
                          y0 + delta_y * 0.5], dim=1) * image.shape[1]
 
-    cropped_and_resized_images = roi_align(image.unsqueeze(0), boxes, output_size=(model_input_size, model_input_size)).squeeze(0)
+    cropped_and_resized_images = roi_align(image.unsqueeze(
+        0), boxes, output_size=(model_input_size, model_input_size)).squeeze(0)
 
     # add normal and uniform noise for better robustness
     cropped_and_resized_images.add_(torch.randn_like(cropped_and_resized_images) * noise_level)
-    cropped_and_resized_images.add_((torch.rand_like(cropped_and_resized_images) - 0.5) * noise_level)
+    cropped_and_resized_images.add_(
+        (torch.rand_like(cropped_and_resized_images) - 0.5) * noise_level)
 
     # compute the score and loss
     score = objective_function(cropped_and_resized_images)
