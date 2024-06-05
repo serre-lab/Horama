@@ -1,13 +1,7 @@
 # Horama: A Compact Library for Feature Visualization Experiments
 
-@todo pull original repo ?
-@todo finish test fix plotting tests
-@todo make first commit
 @todo add notebooks
 @todo add illustration images + logo
-@todo fix pylint
-@todo prepare github cli pipeline
-@todo include tag for pylint, pytest and pypi
 
 Horama provides the implementation code for the research paper:
 
