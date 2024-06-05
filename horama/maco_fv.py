@@ -65,7 +65,7 @@ def maco(objective_function, total_steps=1000, learning_rate=1.0, image_size=128
         loss, img = optimization_step(objective_function, img, box_size, noise, crops_per_iteration, model_input_size, device)
 
         loss.backward()
-        # get dy/dx to update transparency mask
+        # get dL/dx to update transparency mask
         transparency_accumulator += torch.abs(img.grad)
         optimizer.step()
 

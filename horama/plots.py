@@ -33,7 +33,6 @@ def show(img, **kwargs):
 
     plt.imshow(img, **kwargs)
     plt.axis('off')
-    plt.show()
 
 def plot_maco(image, alpha, percentile_image=1.0, percentile_alpha=80):
     # visualize image with alpha mask overlay after normalization and clipping
@@ -49,4 +48,3 @@ def plot_maco(image, alpha, percentile_image=1.0, percentile_alpha=80):
     # overlay alpha mask on the image
     plt.imshow(np.concatenate([image, alpha], -1))
     plt.axis('off')
-    plt.show()

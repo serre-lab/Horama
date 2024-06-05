@@ -1,3 +1,8 @@
+"""
+Horama being design to be a compact hackable library, I choose to voluntarily 
+lower the exgicence in term of coding pattern.
+"""
+
 [MASTER]
 disable=
     R0903, # allows to expose only one public method
@@ -6,6 +11,8 @@ disable=
     E1123, # issues between pylint and tensorflow since 2.2.0
     E1120, # see pylint#3613
     C3001, # lambda function as variable
+    C0116, C0114, # docstring
+    E1101, # torch members are not properly detected
 
 [FORMAT]
 max-line-length=100

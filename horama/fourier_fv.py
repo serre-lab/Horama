@@ -12,7 +12,7 @@ def fft_2d_freq(width, height):
     return torch.sqrt(freq_x**2 + freq_y**2)
 
 def get_fft_scale(width, height, decay_power=1.0):
-    # generate the FFT scale based on the image size and decay power
+    # generate the scaler that account for power decay in FFT space
     frequencies = fft_2d_freq(width, height)
 
     fft_scale = 1.0 / torch.maximum(frequencies, torch.tensor(1.0 / max(width, height))) ** decay_power
@@ -20,8 +20,8 @@ def get_fft_scale(width, height, decay_power=1.0):
 
     return fft_scale.to(torch.complex64)
 
-def init_olah_buffer(width, height, std=1.0):
-    # initialize the Olah buffer with a random spectrum
+def init_lucid_buffer(width, height, std=1.0):
+    # initialize the buffer with a random spectrum a la Lucid
     spectrum_shape = (3, width, height // 2 + 1)
     random_spectrum = torch.complex(torch.randn(spectrum_shape) * std, torch.randn(spectrum_shape) * std)
     return random_spectrum
@@ -42,11 +42,11 @@ def fourier_preconditionner(spectrum, spectrum_scaler, values_range, device):
 
 def fourier(objective_function, decay_power=1.5, total_steps=1000, learning_rate=1.0, image_size=1280, model_input_size=224,
          noise=0.05, values_range=(-2.5, 2.5), crops_per_iteration=6, box_size=(0.20, 0.25), device='cuda'):
-    # perform the Olah optimization process
+    # perform the Lucid (Olah & al.) optimization process
     assert values_range[1] >= values_range[0]
     assert box_size[1] >= box_size[0]
 
-    spectrum = init_olah_buffer(image_size, image_size, std=1.0)
+    spectrum = init_lucid_buffer(image_size, image_size, std=1.0)
     spectrum_scaler = get_fft_scale(image_size, image_size, decay_power)
 
     spectrum = spectrum.to(device)

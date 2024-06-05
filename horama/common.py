@@ -8,6 +8,8 @@ def standardize(tensor):
     return tensor
 
 def recorrelate_colors(image, device):
+    # recorrelates the colors of the images
+    assert len(image.shape) == 3
 
     # tensor for color correlation svd square root
     color_correlation_svd_sqrt = torch.tensor(
@@ -16,9 +18,6 @@ def recorrelate_colors(image, device):
          [0.04329450, -0.10823626, 0.06494176]],
         dtype=torch.float32
     ).to(device)
-
-    # recorrelates the colors of the images
-    assert len(image.shape) == 3
 
     permuted_image = image.permute(1, 2, 0).contiguous()
     flat_image = permuted_image.view(-1, 3)
