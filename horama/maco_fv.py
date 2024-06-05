@@ -22,12 +22,12 @@ def init_maco_buffer(image_shape, std_deviation=1.0):
         download_url(MACO_SPECTRUM_URL, root=".", filename=MACO_SPECTRUM_FILENAME)
 
     # load and resize magnitude template
-    magnitude = torch.tensor(np.load(MACO_SPECTRUM_FILENAME), dtype=torch.float32).cuda()
+    magnitude = torch.tensor(np.load(MACO_SPECTRUM_FILENAME), dtype=torch.float32)
     magnitude = F.interpolate(magnitude.unsqueeze(0), size=spectrum_shape, mode='bilinear', align_corners=False, antialias=True)[0]
 
     return magnitude, random_phase
 
-def maco_preconditioner(magnitude_template, phase, values_range):
+def maco_preconditioner(magnitude_template, phase, values_range, device):
     # apply the maco preconditioner to generate spatial images from magnitude and phase
     # tfel: check why r exp^(j theta) give slighly diff results
     standardized_phase = standardize(phase)
@@ -61,8 +61,8 @@ def maco(objective_function, total_steps=1000, learning_rate=1.0, image_size=128
         optimizer.zero_grad()
 
         # preprocess and compute loss
-        img = maco_preconditioner(magnitude, phase, values_range)
-        loss, img = optimization_step(objective_function, img, box_size, noise, crops_per_iteration, model_input_size, device)
+        img = maco_preconditioner(magnitude, phase, values_range, device)
+        loss, img = optimization_step(objective_function, img, box_size, noise, crops_per_iteration, model_input_size)
 
         loss.backward()
         # get dL/dx to update transparency mask
