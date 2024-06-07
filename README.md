@@ -1,13 +1,13 @@
-# Horama: A Compact Library for Feature Visualization Experiments
+<div align="left">
+    <img src="assets/banner.png" width="75%" alt="Horama logo" align="center" />
+</div>
 
-@todo add notebooks
-@todo add illustration images + logo
+Horama is a compact library designed for Feature Visualization experiments, initially providing the implementation code for the research paper [Maco](https://arxiv.org/abs/2211.10154).
 
-Horama provides the implementation code for the research paper:
+This repository also introduces various feature visualization methods, including a reimagined approach to the [remarkable work by the Clarity team](https://distill.pub/2017/feature-visualization/) and an implementation of [Feature Accentuation](https://arxiv.org/abs/2402.10039) by Hamblin et al. For an official reproduction of Distill's work, complete with comprehensive notebooks, we highly recommend [Lucent](https://github.com/greentfrapp/lucent). However, Horama emphasizes **experimentation** and is not an official reproduction of any other paper aside from Maco within PyTorch.
 
-- *Unlocking Feature Visualization for Deeper Networks with MAgnitude Constrained Optimization* by Thomas Fel*, Thibaut Boissin*, Victor Boutin*, Agustin Picard*, Paul Novello*, Julien Colin, Drew Linsley, Tom Rousseau, Rémi Cadène, Laurent Gardes, Thomas Serre. [Read the paper on arXiv](https://arxiv.org/abs/2211.10154).
+**Starter Notebook:** <a href="https://colab.research.google.com/drive/1TFYbmAgx-gbkLA4eY3lQbbZ-iPSBLiA2?usp=sharing" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" style="vertical-align: middle;"></a>
 
-In addition, this repository introduces various feature visualization methods, including a reimagined approach to the [incredible work of the Clarity team](https://distill.pub/2017/feature-visualization/) and an implementation of [Feature Accentuation](https://arxiv.org/abs/2402.10039) from Hamblin & al. For an official reproduction of distill's work complete with comprehensive notebooks, we highly recommend [Lucent](https://github.com/greentfrapp/lucent). However, Horama focuses on **experimentation** within PyTorch, offering a compact and easily hackable codebase.
 
 # 🚀 Getting Started with Horama
 
@@ -43,11 +43,9 @@ plt.show()
 
 # Notebooks 
 
-@todo: fourier, maco for various models on timm
-@todo: cossim vs logits
-@todo: speedup process, what parameters to change
-@todo: feature inversion
-@todo: feature accentuation
+- Starter Notebook: <a href="https://colab.research.google.com/drive/1TFYbmAgx-gbkLA4eY3lQbbZ-iPSBLiA2?usp=sharing" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" style="vertical-align: middle;"></a>
+- Feature Inversion: *Coming soon*
+- Feature Accentuation: *Coming soon*
 
 # Complete API
 
@@ -81,7 +79,7 @@ fourier(objective_function,
 
 ```
 
-When optimizing, it's crucial to fine-tune the hyperparameters. Parameters like the decay spectrum in the Fourier method significantly impact the visual output, controlling the energy distribution across frequencies. Additionally, adjust the values_range to match your model's preprocessing requirements, and ensure model_input_size matches the expected input size of your model. Typically, setting the noise parameter to about 10% of the input range yields satisfactory results.
+When optimizing, it's crucial to fine-tune the hyperparameters. Parameters like the decay spectrum in the Fourier method significantly impact the visual output, controlling the energy distribution across frequencies. Additionally, adjust the values_range to match your model's preprocessing requirements, and ensure model_input_size matches the expected input size of your model.
 
 # Citation
 
@@ -96,10 +94,11 @@ When optimizing, it's crucial to fine-tune the hyperparameters. Parameters like 
 
 # Additional Resources
 
-A simpler and maintain implementation of the code for Tensorflow and the other feature visualization methods used in the paper come from the [Xplique toolbox](https://github.com/deel-ai/xplique). Additionally, we have created a website called the [LENS Project](https://github.com/serre-lab/Lens), which features the 1000 classes of ImageNet.
+For a simpler and maintained implementation of the code for TensorFlow and the other feature visualization methods used in the paper, refer to the [Xplique toolbox](https://github.com/deel-ai/xplique). Additionally, we have created a website called the [LENS Project](https://github.com/serre-lab/Lens), which features the 1000 classes of ImageNet.
 
-For a code faithful to the original work of the Clarity team, we highly recommend [Lucent](https://github.com/greentfrapp/lucent).
+For code faithful to the original work of the Clarity team, we highly recommend [Lucent](https://github.com/greentfrapp/lucent).
+
 
 # Authors
 
-- [Thomas Fel](https://thomasfel.fr) - thomas_fel@brown.edu, PhD Student DEEL (ANITI), Brown University
+- [Thomas Fel](https://thomasfel.fr) - thomas_fel@brown.edu, PhD Student, Brown University & DEEL (ANITI)
