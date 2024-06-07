@@ -1,12 +1,34 @@
-<div align="left">
+<div align="center">
     <img src="assets/banner.png" width="75%" alt="Horama logo" align="center" />
+</div>
+
+<div align="center">
+    <a href="#">
+        <img src="https://img.shields.io/badge/Python-3.7, 3.8, 3.9, 3.10-efefef">
+    </a>
+    <a href="https://github.com/serre-lab/Horama/actions/workflows/lint.yml/badge.svg">
+        <img alt="PyLint" src="https://github.com/serre-lab/Horama/actions/workflows/lint.yml/badge.svg">
+    </a>
+    <a href="https://github.com/serre-lab/Horama/actions/workflows/tox.yml/badge.svg">
+        <img alt="Tox" src="https://github.com/serre-lab/Horama/actions/workflows/tox.yml/badge.svg">
+    </a>
+    <a href="https://github.com/serre-lab/Horama/actions/workflows/publish.yml/badge.svg">
+        <img alt="Pypi" src="https://github.com/serre-lab/Horama/actions/workflows/publish.yml/badge.svg">
+    </a>
+    <a href="https://pepy.tech/project/horama">
+        <img alt="Pepy" src="https://static.pepy.tech/badge/horama">
+    </a>
+    <a href="#">
+        <img src="https://img.shields.io/badge/License-MIT-efefef">
+    </a>
 </div>
 
 Horama is a compact library designed for Feature Visualization experiments, initially providing the implementation code for the research paper [Maco](https://arxiv.org/abs/2211.10154).
 
 This repository also introduces various feature visualization methods, including a reimagined approach to the [remarkable work by the Clarity team](https://distill.pub/2017/feature-visualization/) and an implementation of [Feature Accentuation](https://arxiv.org/abs/2402.10039) by Hamblin et al. For an official reproduction of Distill's work, complete with comprehensive notebooks, we highly recommend [Lucent](https://github.com/greentfrapp/lucent). However, Horama emphasizes **experimentation** and is not an official reproduction of any other paper aside from Maco within PyTorch.
 
-**Starter Notebook:** <a href="https://colab.research.google.com/drive/1TFYbmAgx-gbkLA4eY3lQbbZ-iPSBLiA2?usp=sharing" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" style="vertical-align: middle;"></a>
+
+- **Starter Notebook:** <a href="https://colab.research.google.com/drive/1TFYbmAgx-gbkLA4eY3lQbbZ-iPSBLiA2?usp=sharing" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" style="vertical-align: middle;"></a>
 
 
 # 🚀 Getting Started with Horama
