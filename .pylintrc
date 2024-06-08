@@ -7,6 +7,7 @@ disable=
     E1120, # see pylint#3613
     C3001, # lambda function as variable
     C0116, C0114, # docstring
+
 [FORMAT]
 max-line-length=100
 max-args=12

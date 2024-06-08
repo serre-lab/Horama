@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import torch
 from torchvision.ops import roi_align
 
@@ -9,17 +11,22 @@ def standardize(tensor):
     return tensor
 
 
+@lru_cache(maxsize=8)
+def get_color_correlation_svd_sqrt(device):
+    return torch.tensor(
+        [[0.56282854, 0.58447580, 0.58447580],
+         [0.19482528, 0.00000000, -0.19482528],
+         [0.04329450, -0.10823626, 0.06494176]],
+        dtype=torch.float32, device=device
+    )
+
+
 def recorrelate_colors(image, device):
     # recorrelates the colors of the images
     assert len(image.shape) == 3
 
     # tensor for color correlation svd square root
-    color_correlation_svd_sqrt = torch.tensor(
-        [[0.56282854, 0.58447580, 0.58447580],
-         [0.19482528, 0.00000000, -0.19482528],
-         [0.04329450, -0.10823626, 0.06494176]],
-        dtype=torch.float32
-    ).to(device)
+    color_correlation_svd_sqrt = get_color_correlation_svd_sqrt(device)
 
     permuted_image = image.permute(1, 2, 0).contiguous()
     flat_image = permuted_image.view(-1, 3)
