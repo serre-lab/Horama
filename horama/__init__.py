@@ -13,5 +13,6 @@ __version__ = '0.0.5'
 
 from .maco_fv import maco
 from .fourier_fv import fourier
+from .feature_accentuation import accentuation
 from .plots import plot_maco
 from .losses import dot_cossim

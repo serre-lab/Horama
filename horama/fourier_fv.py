@@ -22,7 +22,7 @@ def get_fft_scale(width, height, decay_power=1.0):
                                     torch.tensor(1.0 / max(width, height))) ** decay_power
     fft_scale = fft_scale * torch.sqrt(torch.tensor(width * height).float())
 
-    return fft_scale.to(torch.complex64)
+    return fft_scale.to(torch.complex64)[None, :, :]
 
 
 def init_lucid_buffer(width, height, std=1.0):

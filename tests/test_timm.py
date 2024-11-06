@@ -1,7 +1,9 @@
 import torch
 import timm
 import pytest
-from horama import maco, fourier, plot_maco
+from horama import maco, fourier, accentuation, plot_maco
+from horama.fourier_fv import get_fft_scale
+from horama.feature_accentuation import SpectrumBackwardScaler
 
 
 @pytest.fixture
@@ -44,3 +46,19 @@ def test_maco_timm(setup_model):
 
     assert image2.size() == (3, img_size, img_size)
     assert alpha2.size() == (3, img_size, img_size)
+
+
+def test_fa_timm(setup_model):
+    model, objective = setup_model
+
+    img_size = 128
+    model_size = 128
+
+    image_seed = torch.rand((3, 128, 128)) * 0.01
+
+    image3, alpha3 = accentuation(objective, image_seed, total_steps=10, image_size=img_size,
+                                  model_input_size=model_size, device='cpu')
+    plot_maco(image3, alpha3)
+
+    assert image3.size() == (3, img_size, img_size)
+    assert alpha3.size() == (3, img_size, img_size)
