@@ -2,8 +2,6 @@ import torch
 import timm
 import pytest
 from horama import maco, fourier, accentuation, plot_maco
-from horama.fourier_fv import get_fft_scale
-from horama.feature_accentuation import SpectrumBackwardScaler
 
 
 @pytest.fixture
@@ -62,3 +60,39 @@ def test_fa_timm(setup_model):
 
     assert image3.size() == (3, img_size, img_size)
     assert alpha3.size() == (3, img_size, img_size)
+
+
+def test_fa_timm(setup_model):
+    model, objective = setup_model
+
+    img_size = 128
+    model_size = 128
+
+    # Use a deterministic seed for reproducibility
+    torch.manual_seed(0)
+    image_seed = torch.rand((3, img_size, img_size)) * 0.01
+
+    # Run accentuation
+    image_out, alpha = accentuation(
+        objective,
+        image_seed,
+        total_steps=10,  # keep small for speed
+        image_size=img_size,
+        model_input_size=model_size,
+        device='cpu'
+    )
+
+    plot_maco(image_out, alpha)
+
+    # Check shapes
+    assert image_out.size() == (3, img_size, img_size), "Output image has incorrect shape"
+    assert alpha.size() == (3, img_size, img_size), "Alpha map has incorrect shape"
+
+    # Check value range
+    assert image_out.min() >= -2.5 and image_out.max() <= 2.5, "Output image values out of expected range"
+
+    # Check that alpha is non-zero (optimization occurred)
+    assert torch.sum(alpha).item() > 0, "Alpha map is zero—gradient accumulation failed"
+
+    # Sanity check: output image isn't identical to seed
+    assert not torch.allclose(image_out, image_seed, atol=1e-2), "Output too close to seed—optimization may have failed"

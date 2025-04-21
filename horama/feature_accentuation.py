@@ -11,30 +11,35 @@ from .common import recorrelate_colors, get_color_correlation_svd_sqrt
 from .fourier_fv import get_fft_scale, optimization_step
 
 
+class SpectrumBackwardFunction(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, x, spectrum_scaler):
+        ctx.save_for_backward(spectrum_scaler)
+        return x
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        (spectrum_scaler,) = ctx.saved_tensors
+        return grad_output * spectrum_scaler[None, :, :], None
+
+
 class SpectrumBackwardScaler(torch.nn.Module):
     """
-    Act as identity function during forward pass, but scales the gradient
-    by the spectrum scaler during the backward pass.
+    Acts as identity during forward pass, but scales the gradient
+    by the spectrum scaler during backward pass.
 
     Parameters
     ----------
     spectrum_scaler : torch.Tensor
-        The spectrum scaler to use for the backward pass.
+        The spectrum scaler to use during the backward pass.
     """
 
     def __init__(self, spectrum_scaler):
-        super(SpectrumBackwardScaler, self).__init__()
-        self.spectrum_scaler = spectrum_scaler
+        super().__init__()
+        self.register_buffer("spectrum_scaler", spectrum_scaler)
 
     def forward(self, x):
-        return x
-
-    def backward(self, grad_output):
-        grad_output = grad_output * self.spectrum_scaler
-        return grad_output
-
-    def __call__(self, x):
-        return self.forward(x)
+        return SpectrumBackwardFunction.apply(x, self.spectrum_scaler)
 
 
 def fa_preconditionner(spectrum, spectrum_backward_scaler, values_range, device):
