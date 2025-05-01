@@ -64,13 +64,13 @@ def optimization_step(objective_function, image, box_size, noise_level,
     cropped_and_resized_images = roi_align(image.unsqueeze(
         0), boxes, output_size=(model_input_size*2, model_input_size*2)).squeeze(0)
 
+    cropped_and_resized_images = F.interpolate(cropped_and_resized_images, size=(model_input_size, model_input_size),
+                                               mode='bicubic', align_corners=True, antialias=True)
+
     # add normal and uniform noise for better robustness
     cropped_and_resized_images.add_(torch.randn_like(cropped_and_resized_images) * noise_level)
     cropped_and_resized_images.add_(
         (torch.rand_like(cropped_and_resized_images) - 0.5) * noise_level)
-
-    cropped_and_resized_images = F.interpolate(cropped_and_resized_images, size=(model_input_size, model_input_size),
-                                               mode='bicubic', align_corners=True, antialias=True)
 
     # compute the score and loss
     score = objective_function(cropped_and_resized_images)
