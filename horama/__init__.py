@@ -9,7 +9,7 @@ Ref. Unlocking Feature Visualization for Deeper Networks with MAgnitude Constrai
      https://arxiv.org/abs/2306.06805
 """
 
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 
 from .maco_fv import maco
 from .fourier_fv import fourier

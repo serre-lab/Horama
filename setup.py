@@ -5,7 +5,7 @@ with open("README.md", encoding="utf-8") as fh:
 
 setup(
     name="Horama",
-    version="0.2.0",
+    version="0.3.0",
     description="Personal toolbox for experimenting with Feature Visualization",
     long_description=README,
     long_description_content_type="text/markdown",
